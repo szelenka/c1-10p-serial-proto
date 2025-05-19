@@ -1,0 +1,5 @@
+.pio
+.vscode
+.pytest_cache
+build/
+**/__pycache__/

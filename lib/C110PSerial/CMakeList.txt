@@ -1,0 +1,11 @@
+set(srcs 
+        "c110p_serial.pb.c"
+        "C110PSerial.cpp"
+        "ProtoFrame.cpp")
+
+set(requires 
+        "arduino")
+
+idf_component_register(SRCS "${srcs}" 
+                INCLUDE_DIRS "."
+                REQUIRES "${requires}")

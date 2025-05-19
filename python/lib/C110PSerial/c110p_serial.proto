@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+enum C110PRegion {
+        REGION_UNSPECIFIED = 0;
+        REGION_BODY = 1;
+        REGION_LEG = 2;
+        REGION_NECK = 3;
+        REGION_DOME = 4;
+}
+
+enum C110PActuator {
+        UNSPECIFIED = 0;
+        BODY_NECK = 1;
+}
+
+message C110PCommand {
+        uint32 id = 1;
+        C110PRegion source = 2;
+        C110PRegion target = 3;
+        oneof data {
+                AckCommand ack = 4;
+                LedCommand led = 5;
+                MoveCommand move = 6;
+                SoundCommand sound = 7;
+        }
+}
+
+message AckCommand {
+        bool acknowledged = 1;
+        string reason = 2 ;  // Limit string to 16 bytes;
+}
+
+message LedCommand {
+        uint32 start = 1;
+        uint32 end = 2;
+        uint32 duration = 3;
+}
+
+message MoveCommand {
+        C110PActuator target = 1;
+        uint32 x = 2;
+        uint32 y = 3;
+        uint32 z = 4;
+}
+
+message SoundCommand {
+        uint32 id = 1;
+        bool play = 2;
+        bool syncToLeds = 3;
+}
