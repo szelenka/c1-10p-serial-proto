@@ -1,6 +1,6 @@
 from .ProtoFrame import ProtoFrame
-from typing import Callable, Optional
 from .proto_encode import encode_command
+from .proto_decode import decode_command
 from .Logger import logger
 
 C110PRegion_REGION_UNSPECIFIED = 0

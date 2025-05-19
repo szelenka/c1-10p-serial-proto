@@ -1,5 +1,5 @@
 import pytest
-from C110PSerial.C110PSerial import C110PSerial, REGION_DOME, REGION_BODY
+from C110PSerial.C110PSerial import C110PSerial, C110PRegion_REGION_DOME, C110PRegion_REGION_BODY
 
 
 def test_send_successful(stream_mock, C110PCommand):
@@ -16,8 +16,8 @@ def test_send_successful(stream_mock, C110PCommand):
     protoSerial = C110PSerial(stream_mock)
     timestamp = 1001
     msg = C110PCommand(timestamp, cmd_type="led")
-    msg["source"] = REGION_DOME
-    msg["target"] = REGION_BODY
+    msg["source"] = C110PRegion_REGION_DOME
+    msg["target"] = C110PRegion_REGION_BODY
     msg["led"]["start"] = 1
     msg["led"]["end"] = 2
     msg["led"]["duration"] = 3
@@ -34,8 +34,8 @@ def test_send_stream_write_failure(stream_mock, C110PCommand):
 
     protoSerial = C110PSerial(stream_mock)
     msg = C110PCommand(2002, cmd_type="led")
-    msg["source"] = REGION_DOME
-    msg["target"] = REGION_BODY
+    msg["source"] = C110PRegion_REGION_DOME
+    msg["target"] = C110PRegion_REGION_BODY
     msg["led"]["start"] = 1
     msg["led"]["end"] = 2
     msg["led"]["duration"] = 3
@@ -59,14 +59,14 @@ def test_send_multiple_messages(stream_mock, C110PCommand):
 
     protoSerial = C110PSerial(stream_mock)
     msg1 = C110PCommand(1, cmd_type="led")
-    msg1["source"] = REGION_DOME
-    msg1["target"] = REGION_BODY
+    msg1["source"] = C110PRegion_REGION_DOME
+    msg1["target"] = C110PRegion_REGION_BODY
     msg1["led"]["start"] = 1
     msg1["led"]["end"] = 2
     msg1["led"]["duration"] = 3
     msg2 = C110PCommand(2, cmd_type="led")
-    msg2["source"] = REGION_DOME
-    msg2["target"] = REGION_BODY
+    msg2["source"] = C110PRegion_REGION_DOME
+    msg2["target"] = C110PRegion_REGION_BODY
     msg2["led"]["start"] = 4
     msg2["led"]["end"] = 5
     msg2["led"]["duration"] = 6
@@ -80,41 +80,41 @@ def test_send_multiple_messages(stream_mock, C110PCommand):
     assert protoSerial.getUnacknowledgedMessage(2)
 
 def test_createLedCommand(stream_mock, C110PCommand):
-    proto = C110PSerial(stream_mock, REGION_DOME)
-    target = REGION_BODY
+    proto = C110PSerial(stream_mock, C110PRegion_REGION_DOME)
+    target = C110PRegion_REGION_BODY
     start, end, duration = 10, 20, 30
     cmd = proto.createLedCommand(target, start, end, duration)
 
     assert cmd["id"] != 0
-    assert cmd["source"] == REGION_DOME
+    assert cmd["source"] == C110PRegion_REGION_DOME
     assert cmd["target"] == target
     assert cmd["led"]["start"] == start
     assert cmd["led"]["end"] == end
     assert cmd["led"]["duration"] == duration
 
 def test_createSoundCommand(stream_mock, C110PCommand):
-    proto = C110PSerial(stream_mock, REGION_DOME)
-    target = REGION_BODY
+    proto = C110PSerial(stream_mock, C110PRegion_REGION_DOME)
+    target = C110PRegion_REGION_BODY
     soundId = 42
     play, syncToLeds = True, True
     cmd = proto.createSoundCommand(target, soundId, play, syncToLeds)
 
     assert cmd["id"] != 0
-    assert cmd["source"] == REGION_DOME
+    assert cmd["source"] == C110PRegion_REGION_DOME
     assert cmd["target"] == target
     assert cmd["sound"]["id"] == soundId
     assert cmd["sound"]["play"] == play
     assert cmd["sound"]["syncToLeds"] == syncToLeds
 
 def test_createMoveCommand(stream_mock, C110PCommand):
-    proto = C110PSerial(stream_mock, REGION_DOME)
-    target = REGION_BODY
+    proto = C110PSerial(stream_mock, C110PRegion_REGION_DOME)
+    target = C110PRegion_REGION_BODY
     x, y, z = 1, 2, 3
-    move_target = REGION_DOME
+    move_target = C110PRegion_REGION_DOME
     cmd = proto.createMoveCommand(target, move_target, x, y, z)
 
     assert cmd["id"] != 0
-    assert cmd["source"] == REGION_DOME
+    assert cmd["source"] == C110PRegion_REGION_DOME
     assert cmd["target"] == target
     assert cmd["move"]["target"] == move_target
     assert cmd["move"]["x"] == x

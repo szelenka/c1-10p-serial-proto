@@ -13,7 +13,7 @@ public:
     using ProtoFrame::setTimestampProvider;
     using ProtoFrame::setLedCallback;
     using ProtoFrame::setSoundCallback;
-    using ProtoFrame::setMovementCallback;
+    using ProtoFrame::setMoveCallback;
     using ProtoFrame::getSentMessageBufferSize;
     using ProtoFrame::getReceivedMessageBufferSize;
     using ProtoFrame::getUnacknowledgedMessagesSize;

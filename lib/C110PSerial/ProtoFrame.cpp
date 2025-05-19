@@ -228,9 +228,9 @@ void ProtoFrame::processCallback(const C110PCommand& message)
             }
             break;
         case C110PCommand_move_tag:
-            if (m_MovementCallback)
+            if (m_MoveCallback)
             {
-                m_MovementCallback(message.data.move);
+                m_MoveCallback(message.data.move);
             }
             break;
         case C110PCommand_sound_tag:

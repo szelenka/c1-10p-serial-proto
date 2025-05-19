@@ -163,7 +163,7 @@ def test_processCallback_calls_MovementCallback_when_cmd_move(stream_mock, C110P
         called['x'] = d["x"]
         called['y'] = d["y"]
         called['z'] = d["z"]
-    proto.setMovementCallback(cb)
+    proto.setMoveCallback(cb)
     msg = C110PCommand(cmd_type='move')
     msg["move"]["x"] = 7
     msg["move"]["y"] = 10
@@ -201,7 +201,7 @@ def test_processCallback_calls_SoundCallback_when_cmd_sound(stream_mock, C110PCo
 def test_processCallback_does_nothing_on_unknown_type(stream_mock):
     proto = ProtoFrame(stream_mock)
     proto.setLedCallback(lambda d: pytest.fail("LedCallback should not be called"))
-    proto.setMovementCallback(lambda d: pytest.fail("MovementCallback should not be called"))
+    proto.setMoveCallback(lambda d: pytest.fail("MovementCallback should not be called"))
     proto.setSoundCallback(lambda d: pytest.fail("SoundCallback should not be called"))
     proto.processCallback({})  # Should not raise
 

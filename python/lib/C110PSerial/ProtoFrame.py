@@ -23,11 +23,23 @@ class ProtoFrame:
         self.m_inputIndex = 0
         self.m_inputLength = 0
         self.m_inputCrc = 0
-        self.m_timestampProvider = lambda: int(time.time_ns() / 1_000_000)  # Default to milliseconds
+        self.m_timestampProvider = lambda: int(time.time())
         self.m_LedCallback = lambda msg: None
         self.m_SoundCallback = lambda msg: None
-        self.m_MovementCallback = lambda msg: None
+        self.m_MoveCallback = lambda msg: None
         self.crc8 = CRC8()
+
+        if hasattr(self.m_stream, 'any'):
+            # MicroPython
+            self.bytesAvailable = lambda: self.m_stream.any()
+        elif hasattr(self.m_stream, 'in_waiting'):
+            # CircuitPython
+            self.bytesAvailable = lambda: self.m_stream.in_waiting
+        elif hasattr(self.m_stream, 'available'):
+            # Python
+            self.bytesAvailable = lambda: self.m_stream.available()
+        else:
+            raise ValueError("Stream does not support bytesAvailable method")
 
     def reset(self):
         self.m_sentMessageBuffer.reset()
@@ -49,8 +61,8 @@ class ProtoFrame:
     def setSoundCallback(self, cb):
         self.m_SoundCallback = cb
 
-    def setMovementCallback(self, cb):
-        self.m_MovementCallback = cb
+    def setMoveCallback(self, cb):
+        self.m_MoveCallback = cb
 
     def send(self, msg):
         self.trackMessage(msg)
@@ -58,6 +70,7 @@ class ProtoFrame:
     
     def trackMessage(self, msg):
         self.m_sentMessageBuffer.add(msg)
+        # TODO: m_messageInfoMap should be a RingBuffer; if nerver ack, it'll grow unbounded
         if msg["id"] not in self.m_messageInfoMap:
             self.m_messageInfoMap[msg["id"]] = {
                 "lastProcessedTimestamp": self.getSafeTimestamp(),
@@ -73,7 +86,7 @@ class ProtoFrame:
 
     def readFrame(self):
         timestamp = self.getSafeTimestamp()
-        while self.m_stream.any():
+        while self.bytesAvailable():
             now = self.getSafeTimestamp()
             if now - timestamp > self.m_messageTimeout:
                 break
@@ -202,7 +215,7 @@ class ProtoFrame:
                 self.handleNack(message['id'])
         elif 'led' in message and self.m_LedCallback:
             self.m_LedCallback(message['led'])
-        elif 'move' in message and self.m_MovementCallback:
-            self.m_MovementCallback(message['move'])
+        elif 'move' in message and self.m_MoveCallback:
+            self.m_MoveCallback(message['move'])
         elif 'sound' in message and self.m_SoundCallback:
             self.m_SoundCallback(message['sound'])

@@ -117,6 +117,9 @@ make test-cpp
 
 NOTE: As of May 2025, the ArduinoFake library has a "bug" with it's copy/paste of FakeIt. The Makefile does a crude patch of this in the `clean` target. While `clean` will appear to print an error, it's because we run `pio run` to download ArduinoFake first, then use `sed` to patch it.
 
+- https://github.com/eranpeer/FakeIt/wiki/Quickstart
+- https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityGettingStartedGuide.md
+
 ## MicroPython / CircuitPython
 
 ### Protobuf
@@ -210,3 +213,6 @@ This project relies on Python and PyTest testing framework via VSCode.
 ```bash
 make test-py
 ```
+
+- https://docs.micropython.org/en/latest/library/machine.UART.html
+- https://docs.circuitpython.org/en/latest/shared-bindings/busio/#busio.UART

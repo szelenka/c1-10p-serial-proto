@@ -338,7 +338,7 @@ void test_processCallback_calls_MovementCallback_when_cmd_move()
         y = d.y;
         z = d.z;
     };
-    protoFrame.setMovementCallback(cb);
+    protoFrame.setMoveCallback(cb);
 
     C110PCommand msg;
     msg.which_data = C110PCommand_move_tag;
@@ -399,7 +399,7 @@ void test_processCallback_does_nothing_on_unknown_type()
     auto ledCb = [](const C110PCommand_data_led_MSGTYPE& d) { TEST_FAIL_MESSAGE("LedCallback should not be called"); };
     protoFrame.setLedCallback(ledCb);
     auto moveCb = [](const C110PCommand_data_move_MSGTYPE& d) { TEST_FAIL_MESSAGE("MovementCallback should not be called"); };
-    protoFrame.setMovementCallback(moveCb);
+    protoFrame.setMoveCallback(moveCb);
     auto soundCb = [](const C110PCommand_data_sound_MSGTYPE& d) { TEST_FAIL_MESSAGE("SoundCallback should not be called"); };
     protoFrame.setSoundCallback(soundCb);;
 

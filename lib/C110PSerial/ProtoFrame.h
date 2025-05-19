@@ -43,7 +43,7 @@ public:
     std::function<uint64_t()> m_timestampProvider = nullptr; // Timestamp provider function
     std::function<void(const C110PCommand_data_led_MSGTYPE&)> m_LedCallback = nullptr;
     std::function<void(const C110PCommand_data_sound_MSGTYPE&)> m_SoundCallback = nullptr;
-    std::function<void(const C110PCommand_data_move_MSGTYPE&)> m_MovementCallback = nullptr;
+    std::function<void(const C110PCommand_data_move_MSGTYPE&)> m_MoveCallback = nullptr;
 
 
     explicit ProtoFrame(Stream* stream, C110PRegion identifier = C110PRegion_REGION_UNSPECIFIED, uint32_t timeout = 1000, uint32_t maxRetries = 3)
@@ -61,7 +61,7 @@ public:
         }),
         m_LedCallback([](const C110PCommand_data_led_MSGTYPE&) { return; }),
         m_SoundCallback([](const C110PCommand_data_sound_MSGTYPE&) { return; }),
-        m_MovementCallback([](const C110PCommand_data_move_MSGTYPE&) { return; })
+        m_MoveCallback([](const C110PCommand_data_move_MSGTYPE&) { return; })
     {
         
     }
@@ -93,8 +93,8 @@ public:
         m_SoundCallback = cb;
     }
 
-    void setMovementCallback(void (*cb)(const C110PCommand_data_move_MSGTYPE&)) {
-        m_MovementCallback = cb;
+    void setMoveCallback(void (*cb)(const C110PCommand_data_move_MSGTYPE&)) {
+        m_MoveCallback = cb;
     }
 
     virtual bool send(const C110PCommand& message)
