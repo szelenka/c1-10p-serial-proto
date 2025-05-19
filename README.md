@@ -189,7 +189,7 @@ uart.init(9600, bits=8, parity=None, stop=1, rx=3, tx=1)
 c110p_serial = C110PSerial(uart)
 
 # define a void function to process messages by tupe
-cb = lambda (msg): (
+cb = lambda msg: (
   # echo out what the message was
   # TODO: perform logic on message receive here
   print(f"target: {msg["target"]}, x: {msg["x"]}, y: {msg["y"]}, z: {msg["z"]}")
